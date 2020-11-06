@@ -9,8 +9,9 @@ from . import views
 
 
 urlpatterns = [
-    # path('login/',views.index,name='login'),
+
     path('create/',CreateUserView.as_view(),name='create'),
     # path('teacher/',UploadView.as_view(),name='upload'),
     path('authenticate/',include('djoser.urls.jwt'),)
+
 ]
