@@ -24,18 +24,24 @@ class CreateUserView(generics.CreateAPIView):
 class GradeShowViewSet(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
-    queryset = Grade.objects.all()
-    serializer_class = Gradeserializers
+    username = 'b91100'
 
-    def get(self, request, *args, **kwargs):
-
-
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-
-
-        return self.create(request, *args, **kwargs)
+    if (len(username) ==5):
+        queryset = Grade.objects.filter(student_number=username)
+        serializer_class = Gradeserializers
+        permission_classes = (AllowAny,)
+        def get(self, request, *args, **kwargs):
+            return self.list(request, *args, **kwargs)
+        def post(self, request, *args, **kwargs):
+            return self.create(request, *args, **kwargs)
+    elif(len(username) >= 5):
+        queryset = Grade.objects.all()
+        serializer_class = Gradeserializers
+        permission_classes = (AllowAny,)
+        def get(self, request, *args, **kwargs):
+            return self.list(request, *args, **kwargs)
+        def post(self, request, *args, **kwargs):
+            return self.create(request, *args, **kwargs)
 
 
 
