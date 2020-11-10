@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, mixins
 from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from django.contrib.auth.views import LoginView
 from django.views import generic
@@ -20,10 +21,21 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
 
 
-class GradeShowViewSet(viewsets.ModelViewSet):
-    serializer_class = Gradeserializers
+class GradeShowViewSet(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
     queryset = Grade.objects.all()
-    # permission_classes = (IsAuthenticated)
+    serializer_class = Gradeserializers
+
+    def get(self, request, *args, **kwargs):
+
+
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+
+        return self.create(request, *args, **kwargs)
 
 
 

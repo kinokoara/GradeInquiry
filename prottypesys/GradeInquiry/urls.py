@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('create/',CreateUserView.as_view(),name='create'),
     # path('teacher/',UploadView.as_view(),name='upload'),
-    path('hogehoge/',GradeShowViewSet.as_view({'get':'list'})),
+    path('hogehoge/',GradeShowViewSet.as_view()),
     path('authenticate/', include('djoser.urls.jwt'), )
 
 ]
