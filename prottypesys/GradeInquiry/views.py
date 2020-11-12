@@ -20,10 +20,11 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = Userserializers
     permission_classes = (AllowAny,)
 
-
+# ユーザーの成績表示
 class GradeShowViewSet(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
-                  generics.GenericAPIView):
+                  generics.GenericAPIView,):
+
     username = 'b91100'
 
     if (len(username) ==5):

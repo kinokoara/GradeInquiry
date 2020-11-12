@@ -68,10 +68,11 @@ class Student(models.Model):#学籍マスタ
         return self.student_number
 
 class Grade(models.Model):
-    grade_id = models.CharField(max_length=10,primary_key=True)
-    subject_id = models.CharField(max_length=7)
-    student_number = models.CharField(max_length=5)
-    evaluation = models.CharField(max_length=2)
+    grade_id = models.CharField(max_length=10,primary_key=True,blank=True,default="")
+    subject_id = models.CharField(max_length=7,blank=True,default="")
+    student_number = models.CharField(max_length=5,blank=True,default="")
+    evaluation = models.CharField(max_length=2,blank=True,default="")
+    upload = models.FileField(upload_to='media',default="")
 
     def __str__(self):
         return self.grade_id
