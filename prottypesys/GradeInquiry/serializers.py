@@ -45,6 +45,11 @@ class Gradeserializers(serializers.ModelSerializer):
         model = Grade
         fields = ['grade_id','subject_id','student_number','evaluation']
 
+class Loginserializers(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['admin_flag']
+
 
 
 

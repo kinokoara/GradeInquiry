@@ -33,7 +33,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):#ログインテーブル
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     email = models.EmailField(max_length=255,)
-    admin_flag = models.IntegerField(default=0);
+    admin_flag = models.IntegerField(default=0)
     objects = UserManager()
     USERNAME_FIELD = 'username'
     def __str__(self):
