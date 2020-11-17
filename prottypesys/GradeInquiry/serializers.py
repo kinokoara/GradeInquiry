@@ -38,10 +38,4 @@ class Gradeserializers(serializers.ModelSerializer):
 
 
 
-    def list(self):
-
-        return Grade.objects.filter(student_number='b9110')
-
-
-
 
