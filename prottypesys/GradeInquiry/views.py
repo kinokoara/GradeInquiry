@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from .models import Grade
+from .models import Grade,LoginUser
 
 from .serializers import Userserializers, Gradeserializers
 
@@ -17,11 +17,13 @@ class CreateUserView(generics.CreateAPIView):
 class GradeShowViewSet(generics.ListCreateAPIView):
     queryset = Grade.objects.all()
     serializer_class = Gradeserializers
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
 
     def list(self, request):
-        user = self.headers.get('username')
-        logging.info(user)
+        user = request.user
+
+
+
         queryset = Grade.objects.filter(student_number=user)
         logging.debug(queryset)
         serializer = Gradeserializers(queryset, many=True)

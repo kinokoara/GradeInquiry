@@ -18,15 +18,24 @@ class Userserializers(serializers.ModelSerializer):
         pattern2 = '^B.?[0-9]{4}'
         result1 = re.fullmatch(pattern1,username)
         result2 = re.fullmatch(pattern2,username)
+
+        '''
+        アカウント新規登録の際の処理
+        
+        usernameが5文字且つ、(bnnnn or Bnnnn)の場合学生であると判断してadmin_flagに0をいれる。
+        それ以外の場合には先生であると判断してadmin_flagに1をいれる。   
+        例外としてusernameが2文字未満の場合はerrorを登録する    
+        '''
+
         if(len(username) == 5):
             if result1:
-                admin_flag = random.randint(1,50)
+                admin_flag = 0
             elif result2:
-                admin_flag = random.randint(1,50)
-            else: admin_flag = random.randint(51,100)
-        elif(len(username) <= 5):
-            admin_flag = 101
-        else:admin_flag = random.randint(51,100)
+                admin_flag = 0
+            else: admin_flag = 1
+        elif(len(username) <= 1):
+            admin_flag = 'error'
+        else:admin_flag = 1
 
         return LoginUser.objects.create_user(admin_flag=admin_flag,**validated_data)
 
