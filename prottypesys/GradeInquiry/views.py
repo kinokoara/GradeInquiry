@@ -3,6 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+
+
 from .models import Grade,LoginUser
 
 from .serializers import Userserializers, Gradeserializers,Loginserializers
@@ -52,4 +54,3 @@ class LoginView(generics.ListCreateAPIView):
         queryset = LoginUser.objects.filter(username=user)
         serializer = Loginserializers(queryset,many=True)
         return Response(serializer.data)
-
