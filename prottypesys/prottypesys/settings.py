@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
     'uploadgrade.apps.UploadgradeConfig',
+    'teacher',
 ]
 
 MIDDLEWARE = [
