@@ -16,31 +16,31 @@ class CreateUserView(generics.CreateAPIView):
 
 
 # ユーザーの成績表示
-class GradeShowViewSet(generics.ListCreateAPIView):
-    queryset = Grade.objects.all()
-    serializer_class = Gradeserializers
-    '''
-    成績取得のgetメソッドのrequestがきた時の処理の記述
-    '''
-    def list(self, request):
-        user = request.user
-        queryset = Grade.objects.filter(student_number=user)
-        serializer = Gradeserializers(queryset, many=True)
-        return Response(serializer.data)
-
-
-class AllGradeShowViewSet(generics.ListCreateAPIView):
-    queryset = Grade.objects.all()
-    serializer_class = Gradeserializers
-    '''
-    成績取得のgetメソッドのrequestがきた時の処理の記述
-    '''
-
-    def list(self, request):
-        user = request.user
-        queryset = Grade.objects.all()
-        serializer = Gradeserializers(queryset, many=True)
-        return Response(serializer.data)
+# class GradeShowViewSet(generics.ListCreateAPIView):
+#     queryset = Grade.objects.all()
+#     serializer_class = Gradeserializers
+#     '''
+#     成績取得のgetメソッドのrequestがきた時の処理の記述
+#     '''
+#     def list(self, request):
+#         user = request.user
+#         queryset = Grade.objects.filter(student_number=user)
+#         serializer = Gradeserializers(queryset, many=True)
+#         return Response(serializer.data)
+#
+#
+# class AllGradeShowViewSet(generics.ListCreateAPIView):
+#     queryset = Grade.objects.all()
+#     serializer_class = Gradeserializers
+#     '''
+#     成績取得のgetメソッドのrequestがきた時の処理の記述
+#     '''
+#
+#     def list(self, request):
+#         user = request.user
+#         queryset = Grade.objects.all()
+#         serializer = Gradeserializers(queryset, many=True)
+#         return Response(serializer.data)
 
 
 

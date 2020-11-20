@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from rest_framework import generics
+from rest_framework.response import Response
+
 from GradeInquiry.models import Grade
 from io import TextIOWrapper
 
@@ -8,6 +11,7 @@ import csv
 
 
 # ------------------------------------------------------------------
+from GradeInquiry.serializers import Gradeserializers
 
 
 def file_upload(request):
@@ -27,8 +31,23 @@ def file_upload(request):
         return HttpResponseRedirect('success/url/')
 
     else:
-        return render(request, 'file_upload.html')
+        return render(request, 'templates/file_upload.html')
 
+
+
+
+class AllGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+    '''
+    成績取得のgetメソッドのrequestがきた時の処理の記述
+    '''
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.all()
+        serializer = Gradeserializers(queryset, many=True)
+        return Response(serializer.data)
 
 # #
 # def success(request):

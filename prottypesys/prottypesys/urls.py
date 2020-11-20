@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('GradeInquiry.urls')),
     # path('teacher/',include('uploadgrade.urls')),
-    path('file_upload/', include('teacher.urls')),
+    # path('file_upload/', include('teacher.urls')),
     # path('success/url/', teacher.success),
 
     # path('grades/',include('GradeInquiry.urls'))
