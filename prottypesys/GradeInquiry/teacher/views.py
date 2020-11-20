@@ -31,7 +31,7 @@ def file_upload(request):
         return HttpResponseRedirect('success/url/')
 
     else:
-        return render(request, 'templates/file_upload.html')
+        return render(request, 'file_upload.html')
 
 
 
