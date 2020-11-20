@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'GradeInquiry.apps.GradeinquiryConfig',
     'corsheaders',
     'djoser',
-    'uploadgrade.apps.UploadgradeConfig',
-    'teacher',
+    'GradeInquiry.Student.apps.StudentConfig',
+    'GradeInquiry.teacher.apps.TeacherConfig'
 ]
 
 MIDDLEWARE = [
