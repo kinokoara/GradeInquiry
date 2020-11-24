@@ -67,23 +67,6 @@ class Student(models.Model):#学籍マスタ
     def __str__(self):
         return self.student_number
 
-class Grade(models.Model):#成績テーブル
-
-    grade_id = models.CharField('成績ID',blank=True,max_length=10,primary_key=True)
-    subject_id = models.CharField('科目番号',blank=True,max_length=7)
-    student_number = models.CharField('学籍番号',blank=True,max_length=5)
-
-    CATEGORY = (
-        ('1', '秀'),
-        ('2', '優'),
-        ('3', '可'),
-        ('4', '不可'),
-    )
-    evaluation = models.CharField('評価',blank=True,max_length=2, choices=CATEGORY)
-
-    def __str__(self):
-        return (self.student_number)
-
 class Subject(models.Model):
     subject_id = models.CharField(max_length=7,primary_key=True)
     subject_name = models.CharField(max_length=25)
@@ -91,7 +74,47 @@ class Subject(models.Model):
     units = models.CharField(max_length=2)
 
     def __str__(self):
-        return self.subject_id
+        return self.subject_name
+
+class Grade(models.Model):#成績テーブル
+
+    grade_id = models.CharField('成績ID',blank=True,max_length=10,primary_key=True)
+    # subject_id = models.CharField('科目番号',blank=True,max_length=7)
+    subject_id = models.ForeignKey(Subject,verbose_name='科目番号',on_delete=models.CASCADE)
+
+
+    student_number = models.CharField('学籍番号',blank=True,max_length=5)
+    # student_number = models.ForeignKey(Student,verbose_name='学籍番号',on_delete=models.CASCADE)
+
+
+    evaluation = models.CharField('評価',blank=True,max_length=2,)
+
+
+    def subject_name(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.subject_name
+
+    def Dividend_period(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.dividend_period
+    def Units(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.units
+
+    def __str__(self):
+        return (self.grade_id)
+
+# class Subject(models.Model):
+#     subject_id = models.CharField(max_length=7,primary_key=True)
+#     subject_name = models.CharField(max_length=25)
+#     dividend_period = models.CharField(max_length=8)
+#     units = models.CharField(max_length=2)
+#
+#     def __str__(self):
+#         return self.subject_id
 
 class Enrolled(models.Model):
     enrolled_id = models.CharField(max_length=10)
