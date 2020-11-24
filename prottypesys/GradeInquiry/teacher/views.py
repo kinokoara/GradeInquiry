@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.response import Response
 
-from GradeInquiry.models import Grade
+from GradeInquiry.models import Grade,Subject
 from io import TextIOWrapper
 
 import csv
@@ -46,14 +46,6 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
     def list(self, request):
         user = request.user
         queryset = Grade.objects.all()
-        serializer = Gradeserializers(queryset, many=True)
+        serializer = Gradeserializers(queryset, many=True,)
         return Response(serializer.data)
-
-# #
-# def success(request):
-#     str_out = "Success!<p />"
-#     str_out += "成功<p />"
-#     return HttpResponse(str_out)
-
-
 
