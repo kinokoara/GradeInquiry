@@ -45,7 +45,9 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
 
     def list(self, request):
         user = request.user
-        queryset = Grade.objects.all()
+        # pattern = '^b9.?[0-9]{3}'
+        queryset = Grade.objects.filter(student_number__iregex=r'^b9.*$')
         serializer = Gradeserializers(queryset, many=True,)
         return Response(serializer.data)
+
 
