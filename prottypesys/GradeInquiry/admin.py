@@ -29,12 +29,40 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
+class DepartAdmin(admin.ModelAdmin):
+    list_display = ('depart_id', 'depart_name')
+    ordering = ['depart_id', ]
+
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('course_id', 'course_name', 'depart_id')
+    search_fields = ('course_id', 'course_name')
+    ordering = ['depart_id', ]
+
+
+class GradeAdmin(admin.ModelAdmin):
+    list_display = ('grade_id', 'subject_id','student_number', 'evaluation')
+    search_fields = ('student_number', )
+    ordering = ['student_number', ]
+
+
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ('student_number', 'student_name', 'class_number','enrolled_id')
+    search_fields = ('student_name', 'student_number')
+    ordering = ['student_number', ]
+
+
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ('subject_name', 'dividend_period', 'units')
+    search_fields = ('subject_name',)
+    ordering = ['units', ]
+
+
 admin.site.register(LoginUser, UserAdmin)
-admin.site.register(Subject)
-admin.site.register(Student)
-admin.site.register(Depart)
-admin.site.register(Course)
-admin.site.register(Grade)
+admin.site.register(Subject, SubjectAdmin)
+admin.site.register(Student, StudentAdmin)
+admin.site.register(Depart, DepartAdmin)
+admin.site.register(Course, CourseAdmin)
+admin.site.register(Grade, GradeAdmin)
 admin.site.register(Enrolled)
 
 
