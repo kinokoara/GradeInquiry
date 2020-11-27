@@ -40,7 +40,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):#ログインテーブル
         return self.username
 
 
-class Depart(models.Model):#学科マスタ
+class Depart (models.Model):#学科マスタ
     depart_id = models.CharField(max_length=10,primary_key=True)
     depart_name = models.CharField(max_length=255)
 
@@ -48,7 +48,7 @@ class Depart(models.Model):#学科マスタ
         return self.depart_id
 
 
-class Course(models.Model):#コースマスタ
+class Course (models.Model):#コースマスタ
     course_id = models.CharField(max_length=10,primary_key=True)
     course_name =models.CharField(max_length=255)
     depart_id = models.CharField(max_length=10)
@@ -60,44 +60,65 @@ class Student(models.Model):#学籍マスタ
     student_number = models.CharField(max_length=5,primary_key=True)
     student_name = models.CharField(max_length=20)
     class_number = models.CharField(max_length=6)
-    couse_id = models.CharField(max_length=10,null=True)
     enrolled_id = models.CharField(max_length=10)
-    # birthday = models.DateTimeField(null=True)
+    couse_id = models.CharField(max_length=10,null=True)
+    birthday = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.student_number
 
-class Grade(models.Model):#成績テーブル
-
-    grade_id = models.CharField('成績ID',blank=True,max_length=10,primary_key=True)
-    subject_id = models.CharField('科目番号',blank=True,max_length=7)
-    student_number = models.CharField('学籍番号',blank=True,max_length=5)
-
-    evaluation = models.CharField('評価',blank=True,max_length=2)
-
-    def __str__(self):
-        return (self.student_number)
-
-class Subject(models.Model):#科目テーブル
+class Subject(models.Model):
     subject_id = models.CharField(max_length=7,primary_key=True)
     subject_name = models.CharField(max_length=25)
     dividend_period = models.CharField(max_length=8)
     units = models.CharField(max_length=2)
 
     def __str__(self):
-        return self.subject_id
+        return self.subject_name
 
-class Enrolled(models.Model):#在籍テーブル
+class Grade(models.Model):#成績テーブル
+
+    grade_id = models.CharField('成績ID',blank=True,max_length=10,primary_key=True)
+    # subject_id = models.CharField('科目番号',blank=True,max_length=7)
+    subject_id = models.ForeignKey(Subject,verbose_name='科目番号',on_delete=models.CASCADE)
+
+
+    student_number = models.CharField('学籍番号',blank=True,max_length=5)
+    # student_number = models.ForeignKey(Student,verbose_name='学籍番号',on_delete=models.CASCADE)
+
+
+    evaluation = models.CharField('評価',blank=True,max_length=2,)
+
+
+    def subject_name(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.subject_name
+
+    def Dividend_period(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.dividend_period
+    def Units(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.units
+
+    def __str__(self):
+        return (self.grade_id)
+
+# class Subject(models.Model):
+#     subject_id = models.CharField(max_length=7,primary_key=True)
+#     subject_name = models.CharField(max_length=25)
+#     dividend_period = models.CharField(max_length=8)
+#     units = models.CharField(max_length=2)
+#
+#     def __str__(self):
+#         return self.subject_id
+
+class Enrolled(models.Model):
     enrolled_id = models.CharField(max_length=10)
     enrolled_status = models.CharField(max_length=2)
     enrolled_date = models.DateTimeField()
     def __str__(self):
         return self.enrolled_id
-
-
-
-
-
-
-
-
