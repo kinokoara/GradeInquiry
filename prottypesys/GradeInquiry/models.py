@@ -1,9 +1,6 @@
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser,PermissionsMixin
-from django.core.validators import RegexValidator
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
-import pdb
 class UserManager(BaseUserManager):
     def create_user(self,username,password=None,**extra_fields):
         if not username:
@@ -107,14 +104,6 @@ class Grade(models.Model):#成績テーブル
     def __str__(self):
         return (self.grade_id)
 
-# class Subject(models.Model):
-#     subject_id = models.CharField(max_length=7,primary_key=True)
-#     subject_name = models.CharField(max_length=25)
-#     dividend_period = models.CharField(max_length=8)
-#     units = models.CharField(max_length=2)
-#
-#     def __str__(self):
-#         return self.subject_id
 
 class Enrolled(models.Model):
     enrolled_id = models.CharField(max_length=10)

@@ -121,8 +121,56 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
     def list(self, request):
         user = request.user
         # pattern = '^b9.?[0-9]{3}'
-        queryset = Grade.objects.filter(student_number__iregex=r'^b9.*$')
+        queryset = Grade.objects.all()
         serializer = Gradeserializers(queryset, many=True,)
+        return Response(serializer.data)
+
+
+# 学籍番号Aから始まる人
+class AGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.filter(student_number__iregex=r'^A.*$')
+        serializer = Gradeserializers(queryset, many=True, )
+        return Response(serializer.data)
+
+
+# 学籍番号Bから始まる人
+class BGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.filter(student_number__iregex=r'^B.*$')
+        serializer = Gradeserializers(queryset, many=True, )
+        return Response(serializer.data)
+
+
+# 学籍番号Cから始まる人
+class CGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.filter(student_number__iregex=r'^C.*$')
+        serializer = Gradeserializers(queryset, many=True, )
+        return Response(serializer.data)
+
+
+# 学籍番号Dから始まる人
+class DGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.filter(student_number__iregex=r'^D.*$')
+        serializer = Gradeserializers(queryset, many=True, )
         return Response(serializer.data)
 
 
