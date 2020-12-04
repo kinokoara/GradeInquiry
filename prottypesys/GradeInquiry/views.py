@@ -22,4 +22,6 @@ class LoginView(generics.ListCreateAPIView):
         user = request.user
         queryset = LoginUser.objects.filter(username=user)
         serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
         return Response(serializer.data)
