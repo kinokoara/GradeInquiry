@@ -96,27 +96,9 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=84600),
-=======
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
-=======
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
-=======
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
-=======
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
-=======
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
+
 }
 
 
