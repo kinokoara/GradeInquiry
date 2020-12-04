@@ -190,7 +190,7 @@ class SubjectViewSet(generics.ListAPIView):#科目テーブル
         return file_upload_Subject(request)
 
 
-class AllGradeShowViewSet(generics.ListCreateAPIView):
+class SourtGradeShowViewSet(generics.ListCreateAPIView):
     queryset = Grade.objects.all()
     serializer_class = Gradeserializers
     '''
@@ -234,103 +234,44 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
         querysetdt = Grade.objects.filter(student_number__iregex=r'^D2.*$')
         serializerdt = Gradeserializers(querysetdt, many=True, )
 
-        # 学籍番号 A3,B3,C3,D3の成績表示
-        # querysetatt = Grade.objects.filter(student_number__iregex=r'^A3.*$')
-        # serializeratt = Gradeserializers(querysetatt, many=True, )
-        # querysetbtt = Grade.objects.filter(student_number__iregex=r'^B3.*$')
-        # serializerbtt = Gradeserializers(querysetbtt, many=True, )
-        # querysetctt = Grade.objects.filter(student_number__iregex=r'^C3.*$')
-        # serializerctt = Gradeserializers(querysetctt, many=True, )
-        # querysetdtt = Grade.objects.filter(student_number__iregex=r'^D3.*$')
-        # serializerdtt = Gradeserializers(querysetdtt, many=True, )
 
 
-        # 学籍番号 A4,B4,C4,D4の成績表示
-        # querysetaf = Grade.objects.filter(student_number__iregex=r'^A4.*$')
-        # serializeraf = Gradeserializers(querysetaf, many=True, )
-        # querysetbf = Grade.objects.filter(student_number__iregex=r'^B4.*$')
-        # serializerbf = Gradeserializers(querysetbf, many=True, )
-        # querysetcf = Grade.objects.filter(student_number__iregex=r'^C4.*$')
-        # serializercf = Gradeserializers(querysetcf, many=True, )
-        # querysetdf = Grade.objects.filter(student_number__iregex=r'^D4.*$')
-        # serializerdf = Gradeserializers(querysetdf, many=True, )
+        return Response([
+            [
+            serializera.data,
+            serializerao.data,
+            serializerat.data,
+            ],
+            [
+            serializerb.data,
+            serializerbo.data,
+            serializerbt.data,
+            ],
+            [
+            serializerc.data,
+            serializerco.data,
+            serializerct.data,
+            ],
+            [
+            serializerd.data,
+            serializerdo.data,
+            serializerdt.data
+            ]
+        ])
+class AllGradeShowViewSet(generics.ListCreateAPIView):
+    queryset = Grade.objects.all()
+    serializer_class = Gradeserializers
+    '''
+    成績取得のgetメソッドのrequestがきた時の処理の記述
+    '''
+
+    def list(self, request):
+        user = request.user
+        queryset = Grade.objects.filter(grade_id__gte=1)
+        serializer = Gradeserializers(queryset,many=True)
+        return Response(serializer.data)
 
 
 
-        return Response({
-            'GradeA0':serializera.data,
-            'GradeB0':serializerb.data,
-            'GradeC0':serializerc.data,
-            'GradeD0':serializerd.data,
-
-            'GradeA1': serializerao.data,
-            'GradeB1': serializerbo.data,
-            'GradeC1': serializerco.data,
-            'GradeD1': serializerdo.data,
-
-            'GradeA2': serializerat.data,
-            'GradeB2': serializerbt.data,
-            'GradeC2': serializerct.data,
-            'GradeD2': serializerdt.data,
-
-            # 'GradeA3': serializeratt.data,
-            # 'GradeB3': serializerbtt.data,
-            # 'GradeC3': serializerctt.data,
-            # 'GradeD3': serializerdtt.data,
-            #
-            # 'GradeA4': serializeraf.data,
-            # 'GradeB4': serializerbf.data,
-            # 'GradeC4': serializercf.data,
-            # 'GradeD4': serializerdf.data,
-
-        })
-
-
-# 学籍番号Aから始まる人
-# class AGradeShowViewSet(generics.ListCreateAPIView):
-#     queryset = Grade.objects.all()
-#     serializer_class = Gradeserializers
-#
-#     def list(self, request):
-#         user = request.user
-#         queryset = Grade.objects.filter(student_number__iregex=r'^A.*$')
-#         serializer = Gradeserializers(queryset, many=True, )
-#         return Response(serializer.data)
-#
-#
-# # 学籍番号Bから始まる人
-# class BGradeShowViewSet(generics.ListCreateAPIView):
-#     queryset = Grade.objects.all()
-#     serializer_class = Gradeserializers
-#
-#     def list(self, request):
-#         user = request.user
-#         queryset = Grade.objects.filter(student_number__iregex=r'^B.*$')
-#         serializer = Gradeserializers(queryset, many=True, )
-#         return Response(serializer.data)
-#
-#
-# # 学籍番号Cから始まる人
-# class CGradeShowViewSet(generics.ListCreateAPIView):
-#     queryset = Grade.objects.all()
-#     serializer_class = Gradeserializers
-#
-#     def list(self, request):
-#         user = request.user
-#         queryset = Grade.objects.filter(student_number__iregex=r'^C.*$')
-#         serializer = Gradeserializers(queryset, many=True, )
-#         return Response(serializer.data)
-#
-#
-# # 学籍番号Dから始まる人
-# class DGradeShowViewSet(generics.ListCreateAPIView):
-#     queryset = Grade.objects.all()
-#     serializer_class = Gradeserializers
-#
-#     def list(self, request):
-#         user = request.user
-#         queryset = Grade.objects.filter(student_number__iregex=r'^D.*$')
-#         serializer = Gradeserializers(queryset, many=True, )
-#         return Response(serializer.data)
 
 

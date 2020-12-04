@@ -107,18 +107,10 @@ class Grade(models.Model):#成績テーブル
     def __str__(self):
         return (self.grade_id)
 
-
-<<<<<<< HEAD
-class Enrolled(models.Model):#在籍テーブル
-    enrolled_id = models.CharField('在籍ID',max_length=10)
-    enrolled_status = models.CharField('在籍状態',max_length=2)
-    enrolled_date = models.DateTimeField('日付')
-=======
 class Enrolled(models.Model):
     enrolled_id = models.CharField(max_length=10)
     enrolled_status = models.CharField(max_length=2)
     enrolled_date = models.DateTimeField()
->>>>>>> 1e9525dee2938db7045f6b7d70cd9ff5e1e8e5f6
     def __str__(self):
         return self.enrolled_id
 
