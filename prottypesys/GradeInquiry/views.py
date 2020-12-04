@@ -13,11 +13,6 @@ from .serializers import Userserializers, Gradeserializers,Loginserializers
 class CreateUserView(generics.CreateAPIView):
     serializer_class = Userserializers
     permission_classes = (AllowAny,)
-
-
-
-
-
 class LoginView(generics.ListCreateAPIView):
 
     serializer_class = Loginserializers
@@ -27,4 +22,6 @@ class LoginView(generics.ListCreateAPIView):
         user = request.user
         queryset = LoginUser.objects.filter(username=user)
         serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
         return Response(serializer.data)
