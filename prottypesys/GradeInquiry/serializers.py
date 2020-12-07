@@ -14,10 +14,10 @@ class Userserializers(serializers.ModelSerializer):
     def create(self,validated_data):
         username = validated_data.get('username')
         password = validated_data.get('password')
-        pattern1 = '^b.?[0-9]{4}'
-        pattern2 = '^B.?[0-9]{4}'
-        result1 = re.fullmatch(pattern1,username)
-        result2 = re.fullmatch(pattern2,username)
+        # pattern1 = '^b.?[0-9]{4}'
+        pattern = '^[A-D].?[0-9]{4}'
+        # result1 = re.fullmatch(pattern1,username)
+        result2 = re.fullmatch(pattern,username)
 
         '''
         アカウント新規登録の際の処理
@@ -28,10 +28,9 @@ class Userserializers(serializers.ModelSerializer):
         '''
 
         if(len(username) == 5):
-            if result1:
+            if result2:
                 admin_flag = 0
-            elif result2:
-                admin_flag = 0
+
             else: admin_flag = 1
         elif(len(username) <= 1):
             admin_flag = 'error'
@@ -43,7 +42,7 @@ class Userserializers(serializers.ModelSerializer):
 class Gradeserializers(serializers.ModelSerializer):
     class Meta:
         model = Grade
-        fields = ['student_number','subject_name','Dividend_period','evaluation','Units']
+        fields = ['subject_name','Dividend_period','evaluation','Units']
 
 class Loginserializers(serializers.ModelSerializer):
     class Meta:
