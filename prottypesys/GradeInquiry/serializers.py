@@ -49,6 +49,11 @@ class Loginserializers(serializers.ModelSerializer):
         model = LoginUser
         fields = ['admin_flag']
 
+class Gradestudentseriarizer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ['student_number']
+
 
 
 
