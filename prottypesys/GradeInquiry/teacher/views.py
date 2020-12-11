@@ -199,26 +199,22 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
     def list(self, request):
         user = request.user
-        # queryset = Grade.objects.all()
-        # serializer = Gradeserializers(queryset,many=True)
-        # Astudentarray = ['A0001','A0002','A0003','A0004','A0005','A0006','A0007','A0008','A0009','A0010','A0011','A0012',
-        #                 'A0013','A0014','A0015','A0016','A0017','A0018','A0019','A0020','A0021','A0022','A0023','A0024',
-        #                 'A0025','A0026','A0027','A0028','A0029']
-
-
-
-
+        '''
+        学生の学籍番号を全て取得してきている
+        serialisersarrayは学籍番号のみを全て取得
+        studentarrayは学籍番号と項目名を一緒に取得している
+        '''
         querysets = Grade.objects.filter(student_number__iregex='^[A-D].*$')
         serialisers = Gradestudentseriarizer(querysets, many=True, )
         serialisersarray = (list(serialisers.data[0].values()))
-
-
         for i in range(1,100):
             student_num = (list(serialisers.data[i].values()))
             serialisersarray.append(student_num[0])
-
             studentarray = (list(serialisers.data))
 
+        '''
+        学生の成績データの取得
+        '''
         queryset = []
         serialiser = []
         for i in range(100):
@@ -229,7 +225,6 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         Blist = []
         Clist = []
         Dlist = []
-        # Alist =  [[[[studentarray[0], serialiser[0].data]]]]
 
 
 
@@ -276,6 +271,8 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
         queryset = Grade.objects.filter(grade_id__gte=1)
         serializer = Gradeserializers(queryset,many=True)
         return Response(serializer.data)
+
+
 
 
 

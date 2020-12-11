@@ -1,18 +1,18 @@
 import logging
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from .models import Grade,LoginUser,Poster
 
-
-from .models import Grade,LoginUser
-
-from .serializers import Userserializers, Gradeserializers,Loginserializers
+from .serializers import Userserializers, Gradeserializers,Loginserializers,Postserialiser
 
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = Userserializers
     permission_classes = (AllowAny,)
+
 class LoginView(generics.ListCreateAPIView):
 
     serializer_class = Loginserializers
@@ -25,3 +25,40 @@ class LoginView(generics.ListCreateAPIView):
         value = serializer.data[0]
         print(value)
         return Response(serializer.data)
+
+
+class AddPostcontentView(generics.ListCreateAPIView):
+    serializer_class = Postserialiser
+    queryset = Poster.objects.all()
+
+    def post(self,request):
+        user = request.user
+        content = request.data['poster_content']
+        pos = Poster()
+        pos.poster_name = user
+        pos.poster_content = content
+        pos.save()
+        return Response('ok add!!')
+
+    def list(self,request):
+        queryset = Poster.objects.all()
+        serializer = Postserialiser(queryset,many=True)
+
+        return Response(serializer.data)
+
+
+class DeletepostView(generics.DestroyAPIView,generics.ListAPIView):
+        serializer_class = Postserialiser
+        queryset = Poster.objects.all()
+
+
+
+        def list(self,request,pk):
+            queryset = Poster.objects.filter(poster_id=pk)
+            serializer = Postserialiser(queryset, many=True)
+            return Response(serializer.data)
+
+        def delete(self, request, pk, format=None):
+            poster = Poster.objects.filter(poster_id=pk)
+            poster.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)

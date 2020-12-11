@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import LoginUser,Student,Subject,Grade,Enrolled,Depart,Course
+from .models import LoginUser,Student,Subject,Grade,Enrolled,Depart,Course,Poster
 # Register your models here.
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext as _
@@ -36,7 +36,7 @@ admin.site.register(Depart)
 admin.site.register(Course)
 admin.site.register(Grade)
 admin.site.register(Enrolled)
-
+admin.site.register(Poster)
 
 
 
