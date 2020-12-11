@@ -59,6 +59,16 @@ class DeletepostView(generics.DestroyAPIView,generics.ListAPIView):
             return Response(serializer.data)
 
         def delete(self, request, pk, format=None):
-            poster = Poster.objects.filter(poster_id=pk)
-            poster.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            user = request.user
+            queryset = LoginUser.objects.filter(username=user)
+            serializer = Loginserializers(queryset,many=True)
+            flag_data = (list(serializer.data[0].values()))
+            flag = flag_data[0]
+            print(flag)
+
+            if flag == 1:
+                poster = Poster.objects.filter(poster_id=pk)
+                poster.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response('You do not have permission to delete!!!')
