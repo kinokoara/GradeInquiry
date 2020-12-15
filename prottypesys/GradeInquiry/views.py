@@ -51,8 +51,6 @@ class DeletepostView(generics.DestroyAPIView,generics.ListAPIView):
         serializer_class = Postserialiser
         queryset = Poster.objects.all()
 
-
-
         def list(self,request,pk):
             queryset = Poster.objects.filter(poster_id=pk)
             serializer = Postserialiser(queryset, many=True)

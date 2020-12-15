@@ -16,6 +16,29 @@ class GradeShowViewSet(generics.ListCreateAPIView):
     '''
     def list(self, request):
         user = request.user
+        gradeint_array = []
+
+        grade_content = ['秀','優','良','可','不可']
+
+
+
         queryset = Grade.objects.filter(student_number=user)
+        all_gradeenv = len(queryset)
         serializer = Gradeserializers(queryset, many=True)
-        return Response(serializer.data)
+
+
+        for i in range(0, 5):
+            queryset = Grade.objects.filter(student_number=user, evaluation=grade_content[i])
+            gradeint_array.append(len(queryset))
+
+
+        grate = (4.0 * int(gradeint_array[0]) + (3.0*int(gradeint_array[1])) + (2.0*int(gradeint_array[2])) + (1.0*int(gradeint_array[3]))) /int(all_gradeenv)
+
+        print(grate)
+
+
+
+        return Response(
+                        [serializer.data,grate]
+                        )
+
