@@ -219,9 +219,10 @@ class SubjectViewSet(generics.ListAPIView):#科目テーブル
                         subject.subject_name = line[1]
                         subject.units = line[2]
                         subject.dividend_period = line[3]
+                        subject.lecture_name = line[4]
                         subject.save()
 
-                    return render(request, 'upload_Subject.html')
+                    return Response('ok')
 
                 else:
                     return render(request, 'upload_Subject.html')
