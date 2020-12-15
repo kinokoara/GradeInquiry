@@ -116,6 +116,14 @@ class Enrolled(models.Model):
         return self.enrolled_id
 
 
+class Poster(models.Model):
+    poster_id = models.AutoField('投稿ID',primary_key=True)
+    poster_name = models.CharField('投稿者',max_length=20,blank=True)
+    poster_content = models.CharField('投稿内容',max_length=250,blank=True)
+    def __str__(self):
+        return self.poster_name
+
+
 
 
 

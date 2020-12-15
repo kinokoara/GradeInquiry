@@ -239,176 +239,66 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
     def list(self, request):
         user = request.user
-        # queryset = Grade.objects.all()
-        # serializer = Gradeserializers(queryset,many=True)
-        Astudentarray = ['A0001','A0002','A0003','A0004','A0005','A0006','A0007','A0008','A0009','A0010','A0011','A0012',
-                        'A0013','A0014','A0015','A0016','A0017','A0018','A0019','A0020','A0021','A0022','A0023','A0024',
-                        'A0025','A0026','A0027','A0028','A0029']
+        '''
+        学生の学籍番号を全て取得してきている
+        serialisersarrayは学籍番号のみを全て取得
+        studentarrayは学籍番号と項目名を一緒に取得している
+        '''
+        querysets = Grade.objects.filter(student_number__iregex='^[A-D].*$')
+        serialisers = Gradestudentseriarizer(querysets, many=True, )
+        serialisersarray = (list(serialisers.data[0].values()))
+        for i in range(1,100):
+            student_num = (list(serialisers.data[i].values()))
+            serialisersarray.append(student_num[0])
+            studentarray = (list(serialisers.data))
 
-        # 学籍番号 A0,B0,C0,D0の成績表示
+        '''
+        学生の成績データの取得
+        '''
+        queryset = []
+        serialiser = []
+        for i in range(100):
+            queryset.append(Grade.objects.filter(student_number=serialisersarray[i]))
+            serialiser.append(Gradeserializers(queryset[i], many=True,))
 
-        queryset1 = Grade.objects.filter(student_number=Astudentarray[0])
-        serializer1 = Gradeserializers(queryset1, many=True,)
-        serializer1s = Gradestudentseriarizer(queryset1,many=True,)
+        Alist = []
+        Blist = []
+        Clist = []
+        Dlist = []
 
-        queryset2 = Grade.objects.filter(student_number=Astudentarray[1])
-        serializer2 = Gradeserializers(queryset2, many=True, )
-        serializer2s = Gradestudentseriarizer(queryset2, many=True, )
 
-        queryset3 = Grade.objects.filter(student_number=Astudentarray[2])
-        serializer3 = Gradeserializers(queryset3, many=True, )
-        serializer3s = Gradestudentseriarizer(queryset3, many=True, )
 
-        queryset4 = Grade.objects.filter(student_number=Astudentarray[3])
-        serializer4 = Gradeserializers(queryset4, many=True, )
-        serializer4s = Gradestudentseriarizer(queryset4, many=True, )
+        for i in range(0, 29):
+            Alist.append([studentarray[i], serialiser[i].data])
+        for i in range(30,60):
+            Blist.append([studentarray[i], serialiser[i].data])
+        for i in range(61,87):
+            Clist.append([studentarray[i], serialiser[i].data])
+        for i in range(88,99):
+            Dlist.append([studentarray[i], serialiser[i].data])
 
-        queryset5 = Grade.objects.filter(student_number=Astudentarray[4])
-        serializer5 = Gradeserializers(queryset5, many=True, )
-        serializer5s = Gradestudentseriarizer(queryset5, many=True, )
-
-        queryset6 = Grade.objects.filter(student_number=Astudentarray[5])
-        serializer6 = Gradeserializers(queryset6, many=True, )
-        serializer6s = Gradestudentseriarizer(queryset6, many=True, )
-
-        queryset7 = Grade.objects.filter(student_number=Astudentarray[6])
-        serializer7 = Gradeserializers(queryset7, many=True, )
-        serializer7s = Gradestudentseriarizer(queryset7, many=True, )
-
-        queryset8 = Grade.objects.filter(student_number=Astudentarray[7])
-        serializer8 = Gradeserializers(queryset8, many=True, )
-        serializer8s = Gradestudentseriarizer(queryset8, many=True, )
-
-        queryset9 = Grade.objects.filter(student_number=Astudentarray[8])
-        serializer9 = Gradeserializers(queryset9, many=True, )
-        serializer9s = Gradestudentseriarizer(queryset9, many=True, )
-
-        queryset10 = Grade.objects.filter(student_number=Astudentarray[9])
-        serializer10 = Gradeserializers(queryset10, many=True, )
-        serializer10s = Gradestudentseriarizer(queryset10, many=True, )
-
-        queryset11 = Grade.objects.filter(student_number=Astudentarray[10])
-        serializer11 = Gradeserializers(queryset11, many=True, )
-        serializer11s = Gradestudentseriarizer(queryset11, many=True, )
-
-        queryset12 = Grade.objects.filter(student_number=Astudentarray[11])
-        serializer12 = Gradeserializers(queryset12, many=True, )
-        serializer12s = Gradestudentseriarizer(queryset12, many=True, )
-
-        queryset13 = Grade.objects.filter(student_number=Astudentarray[12])
-        serializer13 = Gradeserializers(queryset13, many=True, )
-        serializer13s = Gradestudentseriarizer(queryset13, many=True, )
-
-        queryset14 = Grade.objects.filter(student_number=Astudentarray[13])
-        serializer14 = Gradeserializers(queryset14, many=True, )
-        serializer14s = Gradestudentseriarizer(queryset14, many=True, )
-
-        queryset15 = Grade.objects.filter(student_number=Astudentarray[14])
-        serializer15 = Gradeserializers(queryset15, many=True, )
-        serializer15s = Gradestudentseriarizer(queryset15, many=True, )
-
-        queryset16 = Grade.objects.filter(student_number=Astudentarray[15])
-        serializer16 = Gradeserializers(queryset16, many=True, )
-        serializer16s = Gradestudentseriarizer(queryset16, many=True, )
-
-        queryset17 = Grade.objects.filter(student_number=Astudentarray[16])
-        serializer17 = Gradeserializers(queryset17, many=True, )
-        serializer17s = Gradestudentseriarizer(queryset17, many=True, )
-
-        queryset18 = Grade.objects.filter(student_number=Astudentarray[17])
-        serializer18 = Gradeserializers(queryset18, many=True, )
-        serializer18s = Gradestudentseriarizer(queryset18, many=True, )
-
-        queryset19 = Grade.objects.filter(student_number=Astudentarray[18])
-        serializer19 = Gradeserializers(queryset19, many=True, )
-        serializer19s = Gradestudentseriarizer(queryset19, many=True, )
-
-        queryset20 = Grade.objects.filter(student_number=Astudentarray[19])
-        serializer20 = Gradeserializers(queryset20, many=True, )
-        serializer20s = Gradestudentseriarizer(queryset20, many=True, )
-
-        queryset21 = Grade.objects.filter(student_number=Astudentarray[20])
-        serializer21 = Gradeserializers(queryset21, many=True, )
-        serializer21s = Gradestudentseriarizer(queryset21, many=True, )
-
-        queryset22 = Grade.objects.filter(student_number=Astudentarray[21])
-        serializer22 = Gradeserializers(queryset22, many=True, )
-        serializer22s = Gradestudentseriarizer(queryset22, many=True, )
-
-        queryset23 = Grade.objects.filter(student_number=Astudentarray[22])
-        serializer23 = Gradeserializers(queryset23, many=True, )
-        serializer23s = Gradestudentseriarizer(queryset23, many=True, )
-
-        queryset24 = Grade.objects.filter(student_number=Astudentarray[23])
-        serializer24 = Gradeserializers(queryset24, many=True, )
-        serializer24s = Gradestudentseriarizer(queryset24, many=True, )
-
-        queryset25 = Grade.objects.filter(student_number=Astudentarray[24])
-        serializer25 = Gradeserializers(queryset25, many=True, )
-        serializer25s = Gradestudentseriarizer(queryset25, many=True, )
-
-        queryset26 = Grade.objects.filter(student_number=Astudentarray[25])
-        serializer26 = Gradeserializers(queryset26, many=True, )
-        serializer26s = Gradestudentseriarizer(queryset26, many=True, )
-
-        queryset27 = Grade.objects.filter(student_number=Astudentarray[26])
-        serializer27 = Gradeserializers(queryset27, many=True, )
-        serializer27s = Gradestudentseriarizer(queryset27, many=True, )
-
-        queryset28 = Grade.objects.filter(student_number=Astudentarray[27])
-        serializer28 = Gradeserializers(queryset28, many=True, )
-        serializer28s = Gradestudentseriarizer(queryset28, many=True, )
-
-        queryset29 = Grade.objects.filter(student_number=Astudentarray[28])
-        serializer29 = Gradeserializers(queryset29, many=True, )
-        serializer29s = Gradestudentseriarizer(queryset29, many=True, )
 
         return Response(
-            [# A
-                [# A0
-                    [ #学籍番号の判定
-                        [serializer1s.data[0],serializer1.data],
-                        [serializer2s.data[0],serializer2.data],
-                        [serializer3s.data[0], serializer3.data],
-                        [serializer4s.data[0], serializer4.data],
-                        [serializer5s.data[0],serializer5.data],
-                        [serializer6s.data[0],serializer6.data],
-                        [serializer7s.data[0],serializer7.data],
-                        [serializer8s.data[0],serializer8.data],
-                        [serializer9s.data[0],serializer9.data],
-                        [serializer10s.data[0],serializer10.data],
-                        [serializer11s.data[0],serializer11.data],
-                        [serializer12s.data[0],serializer12.data],
-                        [serializer13s.data[0],serializer13.data],
-                        [serializer14s.data[0],serializer14.data],
-                        [serializer15s.data[0],serializer15.data],
-                        [serializer16s.data[0],serializer16.data],
-                        [serializer17s.data[0], serializer17.data],
-                        [serializer18s.data[0], serializer18.data],
-                        [serializer19s.data[0], serializer19.data],
-                        [serializer20s.data[0], serializer20.data],
-                        [serializer21s.data[0], serializer21.data],
-                        [serializer22s.data[0], serializer22.data],
-                        [serializer23s.data[0], serializer23.data],
-                        [serializer24s.data[0], serializer24.data],
-                        [serializer25s.data[0], serializer25.data],
-                        [serializer26s.data[0], serializer26.data],
-                        [serializer27s.data[0], serializer27.data],
-                        [serializer28s.data[0], serializer28.data],
-                        [serializer29s.data[0], serializer29.data],
-                        ],
-                ],
+        [
+            [
+                    Alist
             ],
+            [
 
-            [ #B
-                [#B0
-                    [#学籍番号の判定
+                    Blist
 
-                    ]
+            ],
+            [
 
-                ]
+                    Clist
 
-            ])
+            ],
+            [
+
+                    Dlist
+
+            ]
+        ])
 class AllGradeShowViewSet(generics.ListCreateAPIView):
     queryset = Grade.objects.all()
     serializer_class = Gradeserializers
@@ -421,6 +311,8 @@ class AllGradeShowViewSet(generics.ListCreateAPIView):
         queryset = Grade.objects.filter(grade_id__gte=1)
         serializer = Gradeserializers(queryset,many=True)
         return Response(serializer.data)
+
+
 
 
 

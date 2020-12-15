@@ -1,6 +1,6 @@
 from rest_framework import serializers
 import random
-from .models import LoginUser,Grade
+from .models import LoginUser,Grade,Poster
 import re
 
 
@@ -53,6 +53,17 @@ class Gradestudentseriarizer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = ['student_number']
+
+
+class Postserialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Poster
+        fields = ['poster_name','poster_content']
+
+class Unitserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ['Units']
 
 
 
