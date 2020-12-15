@@ -14,9 +14,17 @@ import csv
 # ------------------------------------------------------------------
 from GradeInquiry.serializers import Gradeserializers,Loginserializers,Gradestudentseriarizer
 
-class CourseViewSet(generics.ListCreateAPIView):#コースマスタ
+class CourseViewSet(generics.ListAPIView):#コースマスタ
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
+
+    def list(self,request):
+        user = request.user
+        queryset = LoginUser.objects.filter(username=user)
+        serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data)
 
     def post(self,request):
         user = str(request.user)
@@ -40,7 +48,7 @@ class CourseViewSet(generics.ListCreateAPIView):#コースマスタ
                         course.depart_id = line[2]
                         course.save()
 
-                    return render(request, 'upload_Course.html')
+                    return Response('ok')
 
                 else:
                     return render(request, 'upload_Course.html')
@@ -51,6 +59,14 @@ class CourseViewSet(generics.ListCreateAPIView):#コースマスタ
 class DepartViewSet(generics.ListAPIView):#学科マスタ
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
+
+    def list(self,request):
+        user = request.user
+        queryset = LoginUser.objects.filter(username=user)
+        serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data)
 
     def post(self,request):
         user = str(request.user)
@@ -73,8 +89,7 @@ class DepartViewSet(generics.ListAPIView):#学科マスタ
                         depart.depart_name = line[1]
                         depart.save()
 
-                    return render(request, 'upload_Depart.html')
-
+                    return Response('ok')
                 else:
                     return render(request, 'upload_Depart.html')
 
@@ -84,6 +99,14 @@ class DepartViewSet(generics.ListAPIView):#学科マスタ
 class GradeViewSet(generics.ListAPIView):#成績テーブル
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
+
+    def list(self,request):
+        user = request.user
+        queryset = LoginUser.objects.filter(username=user)
+        serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data)
 
     def post(self,request):
         user = str(request.user)
@@ -108,7 +131,7 @@ class GradeViewSet(generics.ListAPIView):#成績テーブル
                         grade.student_number = line[3]
                         grade.save()
 
-                    return render(request, 'upload_Grade.html')
+                    return Response('ok')
 
                 else:
                     return render(request, 'upload_Grade.html')
@@ -120,6 +143,14 @@ class GradeViewSet(generics.ListAPIView):#成績テーブル
 class StudentViewSet(generics.ListAPIView):#学籍マスタ
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
+
+    def list(self,request):
+        user = request.user
+        queryset = LoginUser.objects.filter(username=user)
+        serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data)
 
     def post(self,request):
         user = str(request.user)
@@ -147,7 +178,7 @@ class StudentViewSet(generics.ListAPIView):#学籍マスタ
                         # student.birthday =[]
                         student.save()
 
-                    return render(request, 'upload_Student.html')
+                    return Response('ok')
 
                 else:
                     return render(request, 'upload_Student.html')
@@ -158,6 +189,14 @@ class StudentViewSet(generics.ListAPIView):#学籍マスタ
 class SubjectViewSet(generics.ListAPIView):#科目テーブル
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
+
+    def list(self,request):
+        user = request.user
+        queryset = LoginUser.objects.filter(username=user)
+        serializer = Loginserializers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data)
 
     def post(self,request):
         user = str(request.user)
@@ -180,9 +219,10 @@ class SubjectViewSet(generics.ListAPIView):#科目テーブル
                         subject.subject_name = line[1]
                         subject.units = line[2]
                         subject.dividend_period = line[3]
+                        subject.lecture_name = line[4]
                         subject.save()
 
-                    return render(request, 'upload_Subject.html')
+                    return Response('ok')
 
                 else:
                     return render(request, 'upload_Subject.html')

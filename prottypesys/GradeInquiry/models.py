@@ -66,11 +66,12 @@ class Student(models.Model):#学籍マスタ
     def __str__(self):
         return self.student_number
 
-class Subject(models.Model):
+class Subject(models.Model):#科目テーブル
     subject_id = models.CharField('科目番号',blank=True,max_length=7,primary_key=True)
     subject_name = models.CharField('科目名',max_length=25)
     units = models.CharField('単位数',max_length=2)
     dividend_period = models.CharField('配当期',max_length=8)
+    lecture_name = models.CharField('担当者',max_length=25,default="")
 
     def __str__(self):
         return self.subject_name
