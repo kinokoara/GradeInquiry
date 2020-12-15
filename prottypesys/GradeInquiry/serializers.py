@@ -60,14 +60,10 @@ class Postserialiser(serializers.ModelSerializer):
         model = Poster
         fields = ['poster_name','poster_content']
 
-    # def create(self, validated_data):
-    #
-    #     user = self.context['request'].user
-    #     contents = validated_data.get('contents')
-    #
-    #     return Poster.objects.create(user=user,poster_content=contents)
-    #
-
+class Unitserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = ['Units']
 
 
 

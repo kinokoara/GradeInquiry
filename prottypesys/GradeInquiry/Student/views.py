@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 
 from GradeInquiry.models import Grade
-from GradeInquiry.serializers import Gradeserializers
+from GradeInquiry.serializers import Gradeserializers,Unitserializer
 
 
 class GradeShowViewSet(generics.ListCreateAPIView):
@@ -17,28 +17,34 @@ class GradeShowViewSet(generics.ListCreateAPIView):
     def list(self, request):
         user = request.user
         gradeint_array = []
-
+        unit_array = []
         grade_content = ['秀','優','良','可','不可']
 
 
 
         queryset = Grade.objects.filter(student_number=user)
-        all_gradeenv = len(queryset)
+        data_int = len(queryset)
         serializer = Gradeserializers(queryset, many=True)
-
+        unit_serializer = Unitserializer(queryset,many=True)
+        for n in range(data_int):
+            unit_num = (list(unit_serializer.data[n].values()))
+            outarray = unit_num[0]
+            unit_array.append(int(outarray))
+            allunit = sum(unit_array)
+        print(allunit)
 
         for i in range(0, 5):
             queryset = Grade.objects.filter(student_number=user, evaluation=grade_content[i])
             gradeint_array.append(len(queryset))
 
 
-        grate = (4.0 * int(gradeint_array[0]) + (3.0*int(gradeint_array[1])) + (2.0*int(gradeint_array[2])) + (1.0*int(gradeint_array[3]))) /int(all_gradeenv)
+        grate = (4.0 * int(gradeint_array[0]) + (3.0*int(gradeint_array[1])) + (2.0*int(gradeint_array[2])) + (1.0*int(gradeint_array[3]))) /int(allunit)
 
         print(grate)
 
 
 
         return Response(
-                        [serializer.data,grate]
+                        [serializer.data,round(grate,2)]
                         )
 
