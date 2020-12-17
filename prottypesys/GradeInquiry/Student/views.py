@@ -47,6 +47,6 @@ class GradeShowViewSet(generics.ListCreateAPIView):
 
 
         return Response(
-                        [serializer.data,grate]
+                        [serializer.data,round(grate,3)]
                         )
 
