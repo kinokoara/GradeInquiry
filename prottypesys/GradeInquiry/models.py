@@ -1,5 +1,7 @@
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser,PermissionsMixin
 from django.db import models
+from django.utils import timezone
+
 
 class UserManager(BaseUserManager):
     def create_user(self,username,password=None,**extra_fields):
@@ -105,6 +107,11 @@ class Grade(models.Model):#成績テーブル
         queryset = Subject.objects.get(subject_name=id)
         return queryset.units
 
+    def lecture_name(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.lecture_name
+
     def __str__(self):
         return (self.grade_id)
 
@@ -120,6 +127,7 @@ class Poster(models.Model):
     poster_id = models.AutoField('投稿ID',primary_key=True)
     poster_name = models.CharField('投稿者',max_length=20,blank=True)
     poster_content = models.CharField('投稿内容',max_length=250,blank=True)
+    post_data = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.poster_name
 

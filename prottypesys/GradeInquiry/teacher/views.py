@@ -252,6 +252,8 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             serialisersarray.append(student_num[0])
             studentarray = (list(serialisers.data))
 
+        print(serialisersarray)
+
         '''
         学生の成績データの取得
         '''
@@ -269,7 +271,7 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
 
         for i in range(0, 29):
-            Alist.append([studentarray[i], serialiser[i].data])
+            Alist.append([studentarray[i], serialiser[i].data,['評定平均']])
         for i in range(30,60):
             Blist.append([studentarray[i], serialiser[i].data])
         for i in range(61,87):

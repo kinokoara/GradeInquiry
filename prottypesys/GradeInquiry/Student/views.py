@@ -22,10 +22,12 @@ class GradeShowViewSet(generics.ListCreateAPIView):
 
 
 
-        queryset = Grade.objects.filter(student_number=user)
+        queryset = Grade.objects.filter(student_number=user,)
         data_int = len(queryset)
         serializer = Gradeserializers(queryset, many=True)
         unit_serializer = Unitserializer(queryset,many=True)
+
+
         for n in range(data_int):
             unit_num = (list(unit_serializer.data[n].values()))
             outarray = unit_num[0]

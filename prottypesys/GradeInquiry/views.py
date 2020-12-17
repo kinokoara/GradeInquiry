@@ -34,9 +34,11 @@ class AddPostcontentView(generics.ListCreateAPIView):
     def post(self,request):
         user = request.user
         content = request.data['poster_content']
+        date = request.data['post_data']
         pos = Poster()
         pos.poster_name = user
         pos.poster_content = content
+        pos.post_data = date
         pos.save()
         return Response('ok add!!')
 

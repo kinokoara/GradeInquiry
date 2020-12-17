@@ -42,7 +42,7 @@ class Userserializers(serializers.ModelSerializer):
 class Gradeserializers(serializers.ModelSerializer):
     class Meta:
         model = Grade
-        fields = ['subject_name','Dividend_period','evaluation','Units']
+        fields = ['subject_name','Dividend_period','evaluation','Units','lecture_name']
 
 class Loginserializers(serializers.ModelSerializer):
     class Meta:
@@ -58,7 +58,7 @@ class Gradestudentseriarizer(serializers.ModelSerializer):
 class Postserialiser(serializers.ModelSerializer):
     class Meta:
         model = Poster
-        fields = ['poster_name','poster_content']
+        fields = ['poster_id','poster_name','poster_content','post_data']
 
 class Unitserializer(serializers.ModelSerializer):
     class Meta:
