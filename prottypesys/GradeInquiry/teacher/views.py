@@ -12,7 +12,8 @@ import csv
 
 
 # ------------------------------------------------------------------
-from GradeInquiry.serializers import Gradeserializers,Loginserializers,Gradestudentseriarizer
+from GradeInquiry.serializers import Gradeserializers, Loginserializers, Gradestudentseriarizer, Unitserializer
+
 
 class CourseViewSet(generics.ListAPIView):#コースマスタ
     serializer_class = Loginserializers
@@ -238,7 +239,13 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
     '''
 
     def list(self, request):
+        global allunit
         user = request.user
+        gradeint_array = []
+        unit_array = []
+        grade_content = ['秀', '優', '良', '可', '不可']
+        grate_array = []
+        iflen = 0
         '''
         学生の学籍番号を全て取得してきている
         serialisersarrayは学籍番号のみを全て取得
@@ -247,12 +254,47 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         querysets = Grade.objects.filter(student_number__iregex='^[A-D].*$')
         serialisers = Gradestudentseriarizer(querysets, many=True, )
         serialisersarray = (list(serialisers.data[0].values()))
+
+
+
+
+
+
+
         for i in range(1,100):
             student_num = (list(serialisers.data[i].values()))
             serialisersarray.append(student_num[0])
             studentarray = (list(serialisers.data))
 
         print(serialisersarray)
+        userlen = len(serialisersarray)
+
+        '''
+                各学生ごとの評定平均処理
+                '''
+        for n in range(0,int(userlen)):
+            queryset = Grade.objects.filter(student_number=serialisersarray[n])
+            data_int = len(queryset)
+            print(data_int)
+            serializer = Gradeserializers(queryset, many=True)
+            unit_serializer = Unitserializer(queryset, many=True)
+            if iflen >= 0:
+
+                for n in range(0,int(data_int)):
+                    unit_num = (list(unit_serializer.data[n].values()))
+                    outarray = unit_num[0]
+                    unit_array.append(int(outarray))
+                    unit_all = sum(unit_array)
+                    print(unit_all)
+
+            if iflen >= 0:
+                for i in range(0, 5):
+                    queryset = Grade.objects.filter(student_number=user, evaluation=grade_content[i])
+                    gradeint_array.append(len(queryset))
+
+            grate = (4.0 * int(gradeint_array[0]) + (3.0 * int(gradeint_array[1])) + (2.0 * int(gradeint_array[2])) + (
+                        1.0 * int(gradeint_array[3]))) / int(unit_all)
+            grate_array.append(grate)
 
         '''
         学生の成績データの取得
@@ -271,13 +313,13 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
 
         for i in range(0, 29):
-            Alist.append([studentarray[i], serialiser[i].data,['評定平均']])
+            Alist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],2)]])
         for i in range(30,60):
-            Blist.append([studentarray[i], serialiser[i].data])
+            Blist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],2)]])
         for i in range(61,87):
-            Clist.append([studentarray[i], serialiser[i].data])
+            Clist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],2)]])
         for i in range(88,99):
-            Dlist.append([studentarray[i], serialiser[i].data])
+            Dlist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],2)]])
 
 
         return Response(
