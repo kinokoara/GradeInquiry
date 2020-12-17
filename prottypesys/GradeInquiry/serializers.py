@@ -42,7 +42,7 @@ class Userserializers(serializers.ModelSerializer):
 class Gradeserializers(serializers.ModelSerializer):
     class Meta:
         model = Grade
-        fields = ['subject_name','Dividend_period','evaluation','Units','lecture_name']
+        fields = ['subject_name','Dividend_period','evaluation','Units']
 
 class Loginserializers(serializers.ModelSerializer):
     class Meta:
