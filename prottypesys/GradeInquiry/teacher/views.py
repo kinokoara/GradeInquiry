@@ -247,6 +247,7 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         grate_array = []
         unitall_array = []
         iflen = 0
+
         '''
         学生の学籍番号を全て取得してきている
         serialisersarrayは学籍番号のみを全て取得
@@ -275,7 +276,7 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             unitall_array = []
             unit_array = []
             sum_array = []
-            numgrade_array = []
+            numgrade_dict = {}
 
             queryset = Grade.objects.filter(student_number=serialisersarray[n])
             data_int = len(queryset)
@@ -296,24 +297,31 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
 
             for i in range(0, 5):
+                sum_all = 0
+                sum_array = []
                 queryset = Grade.objects.filter(student_number=serialisersarray[n], evaluation=grade_content[i])
                 sumunit = len(queryset)
+                if sumunit == 0:
+                    numgrade_dict[grade_content[i]] = sum_all
+
                 sum_serializer = Unitserializer(queryset, many=True)
 
                 for z in range(sumunit):
                     sum_unit = list(sum_serializer.data[z].values())
                     sumdata = sum_unit[0]
                     sum_array.append(int(sumdata))
-                    sumall = sum(sum_array)
-                    numgrade_array.append(sumall)
-
+                    sum_all = sum(sum_array)
+                    if sum_all == 0:
+                        print('正常に動作')
+                    numgrade_dict[grade_content[i]] = sum_all
+                print(grade_content[i],sum_all,numgrade_dict)
 
 
 
                 gradeint_array.append(len(queryset))
 
-            grate = (4.0 * int(numgrade_array[0]) + (3.0 * int(numgrade_array[1])) + (2.0 * int(numgrade_array[2])) + (
-                        1.0 * int(numgrade_array[3]))) / int(unit_all)
+            grate = (4.0 * int(numgrade_dict['秀']) + (3.0 * int(numgrade_dict['優'])) + (2.0 * int(numgrade_dict['良'])) + (
+                        1.0 * int(numgrade_dict['可']))) / int(unit_all)
             print('学籍番号',serialisersarray[n])
             print('評定平均',grate)
             print(len(serialisersarray))
