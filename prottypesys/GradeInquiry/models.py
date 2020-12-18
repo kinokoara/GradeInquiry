@@ -107,7 +107,10 @@ class Grade(models.Model):#成績テーブル
         queryset = Subject.objects.get(subject_name=id)
         return queryset.units
 
-
+    def lecture_name(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.lecture_name
 
     def __str__(self):
         return (self.grade_id)

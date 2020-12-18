@@ -302,8 +302,8 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
                 for z in range(sumunit):
                     sum_unit = list(sum_serializer.data[z].values())
-                    sumarray = sum_unit[0]
-                    sum_array.append(int(sumarray))
+                    sumdata = sum_unit[0]
+                    sum_array.append(int(sumdata))
                     sumall = sum(sum_array)
                     numgrade_array.append(sumall)
 
