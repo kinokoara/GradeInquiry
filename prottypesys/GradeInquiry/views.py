@@ -1,4 +1,6 @@
 import logging
+import re
+
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -6,7 +8,7 @@ from rest_framework.views import APIView
 
 from .models import Grade,LoginUser,Poster
 
-from .serializers import Userserializers, Gradeserializers,Loginserializers,Postserialiser
+from .serializers import Userserializers, Gradeserializers,Loginserializers,Postserialiser,Postuserserialiser
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -66,8 +68,15 @@ class DeletepostView(generics.DestroyAPIView,generics.ListAPIView):
             flag = flag_data[0]
             print(flag)
 
-            if flag == 1:
-                poster = Poster.objects.filter(poster_id=pk)
+            poster = Poster.objects.filter(poster_id=pk)
+            poster_serializer = Postuserserialiser(poster,many=True)
+            post_name = list(poster_serializer.data[0].values())
+            poster_name = post_name[0]
+            username = str(user)
+            if len(poster_name) == len(username):
+                poster.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            elif flag == 1:
                 poster.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:

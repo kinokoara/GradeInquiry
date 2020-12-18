@@ -65,6 +65,13 @@ class Unitserializer(serializers.ModelSerializer):
         model = Grade
         fields = ['Units']
 
+class Postuserserialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Poster
+        fields = ['poster_name']
+
+
+
 
 
 
