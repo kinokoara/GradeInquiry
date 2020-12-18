@@ -274,6 +274,8 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             gradeint_array = []
             unitall_array = []
             unit_array = []
+            sum_array = []
+            numgrade_array = []
 
             queryset = Grade.objects.filter(student_number=serialisersarray[n])
             data_int = len(queryset)
@@ -295,10 +297,23 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
             for i in range(0, 5):
                 queryset = Grade.objects.filter(student_number=serialisersarray[n], evaluation=grade_content[i])
+                sumunit = len(queryset)
+                sum_serializer = Unitserializer(queryset, many=True)
+
+                for z in range(sumunit):
+                    sum_unit = list(sum_serializer.data[z].values())
+                    sumarray = sum_unit[0]
+                    sum_array.append(int(sumarray))
+                    sumall = sum(sum_array)
+                    numgrade_array.append(sumall)
+
+
+
+
                 gradeint_array.append(len(queryset))
 
-            grate = (4.0 * int(gradeint_array[0]) + (3.0 * int(gradeint_array[1])) + (2.0 * int(gradeint_array[2])) + (
-                        1.0 * int(gradeint_array[3]))) / int(unit_all)
+            grate = (4.0 * int(numgrade_array[0]) + (3.0 * int(numgrade_array[1])) + (2.0 * int(numgrade_array[2])) + (
+                        1.0 * int(numgrade_array[3]))) / int(unit_all)
             print('学籍番号',serialisersarray[n])
             print('評定平均',grate)
             print(len(serialisersarray))

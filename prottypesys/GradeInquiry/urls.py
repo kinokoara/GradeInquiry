@@ -20,4 +20,5 @@ urlpatterns = [
     path('contents/<int:pk>/',DeletepostView.as_view(),name='delete')
 
 
+
 ]
