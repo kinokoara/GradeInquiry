@@ -1,6 +1,6 @@
 from rest_framework import serializers
 import random
-from .models import LoginUser,Grade,Poster
+from .models import LoginUser,Grade,Poster,Sheet
 import re
 
 
@@ -69,6 +69,13 @@ class Postuserserialiser(serializers.ModelSerializer):
     class Meta:
         model = Poster
         fields = ['poster_name']
+
+class Sheetserialiser(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Sheet
+        fields = ['changefile']
 
 
 

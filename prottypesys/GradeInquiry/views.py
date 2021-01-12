@@ -26,7 +26,7 @@ class LoginView(generics.ListCreateAPIView):
         serializer = Loginserializers(queryset,many=True)
         value = serializer.data[0]
         print(value)
-        return Response(serializer.data)
+        return Response(serializer.data[0])
 
 
 class AddPostcontentView(generics.ListCreateAPIView):

@@ -102,6 +102,7 @@ class Grade(models.Model):#成績テーブル
         id = self.subject_id
         queryset = Subject.objects.get(subject_name=id)
         return queryset.dividend_period
+
     def Units(self):
         id = self.subject_id
         queryset = Subject.objects.get(subject_name=id)
@@ -131,6 +132,12 @@ class Poster(models.Model):
     def __str__(self):
         return self.poster_name
 
+class Sheet(models.Model):
+    changefile = models.FileField(blank=False,null=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.changefile
 
 
 

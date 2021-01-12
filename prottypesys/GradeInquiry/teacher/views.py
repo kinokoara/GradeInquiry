@@ -1,21 +1,21 @@
 import re
+import shutil
+import zipfile
 
+import pandas
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from rest_framework import generics
 from rest_framework.response import Response
-from GradeInquiry.models import Grade, Subject, Course, Depart, Student,LoginUser
+from GradeInquiry.models import Grade, Subject, Course, Depart, Student, LoginUser, Sheet
 from io import TextIOWrapper
-
+MEDIA_ROOT = 'exelfiles/'
+ZIP_ROOT = 'GradeInquiry/teacher/zip.zip'
 import csv
+from GradeInquiry.serializers import Gradeserializers, Loginserializers, Gradestudentseriarizer, Unitserializer,Sheetserialiser
 
 
-# ------------------------------------------------------------------
-from GradeInquiry.serializers import Gradeserializers, Loginserializers, Gradestudentseriarizer, Unitserializer
-
-
-class CourseViewSet(generics.ListAPIView):#コースマスタ
+class CourseViewSet(generics.ListAPIView): #コースマスタ
     serializer_class = Loginserializers
     queryset = LoginUser.objects.all()
 
@@ -35,6 +35,7 @@ class CourseViewSet(generics.ListAPIView):#コースマスタ
             return 'error'
 
         else:
+
 
             def file_upload_Course(request):
                 if 'csv' in request.FILES:
@@ -207,7 +208,6 @@ class SubjectViewSet(generics.ListAPIView):#科目テーブル
             return 'error'
 
         else:
-
             def file_upload_Subject(request):
                 if 'csv' in request.FILES:
                     csv_file = TextIOWrapper(request.FILES['csv'].file, encoding='utf-8')
@@ -283,6 +283,7 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             print('データの数',data_int)
             serializer = Gradeserializers(queryset, many=True)
             unit_serializer = Unitserializer(queryset, many=True)
+            print(unit_serializer)
 
             for x in range(data_int):
 
@@ -294,13 +295,12 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
                 unitall_array.append(unit_all)
                 print('そう単位数',unit_all)
 
-
-
             for i in range(0, 5):
                 sum_all = 0
                 sum_array = []
                 queryset = Grade.objects.filter(student_number=serialisersarray[n], evaluation=grade_content[i])
                 sumunit = len(queryset)
+
                 if sumunit == 0:
                     numgrade_dict[grade_content[i]] = sum_all
 
@@ -316,8 +316,6 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
                     numgrade_dict[grade_content[i]] = sum_all
                 print(grade_content[i],sum_all,numgrade_dict)
 
-
-
                 gradeint_array.append(len(queryset))
 
             grate = (4.0 * int(numgrade_dict['秀']) + (3.0 * int(numgrade_dict['優'])) + (2.0 * int(numgrade_dict['良'])) + (
@@ -328,8 +326,8 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
 
             grate_array.append(grate)
 
-
         print(grate_array)
+
         print(len(grate_array))
 
         '''
@@ -340,13 +338,10 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         for i in range(100):
             queryset.append(Grade.objects.filter(student_number=serialisersarray[i]))
             serialiser.append(Gradeserializers(queryset[i], many=True,))
-
         Alist = []
         Blist = []
         Clist = []
         Dlist = []
-
-
 
         for i in range(0, 29):
             Alist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
@@ -364,37 +359,36 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
                     Alist
             ],
             [
-
                     Blist
-
             ],
             [
-
                     Clist
-
             ],
             [
-
                     Dlist
-
             ]
         ])
-class AllGradeShowViewSet(generics.ListCreateAPIView):
-    queryset = Grade.objects.all()
-    serializer_class = Gradeserializers
-    '''
-    成績取得のgetメソッドのrequestがきた時の処理の記述
-    '''
-
-    def list(self, request):
-        user = request.user
-        queryset = Grade.objects.filter(grade_id__gte=1)
-        serializer = Gradeserializers(queryset,many=True)
-        return Response(serializer.data)
 
 
+class ChangefileStyleViewSet(generics.CreateAPIView):
+    serializer_class = Sheetserialiser
+    queryset = Sheet.objects.all()
 
+    def post(self,request):
+        changesheet = ['student', 'gakka', 'grade', 'subject', 'corce', 'enllold', 'login']
+        files = []
 
+        for i in range(7):
+            exceldata = pandas.read_excel(request.FILES['changefile'].file,sheet_name=i)
+            filename = changesheet[i] + '.csv'
+            csvfile = exceldata.to_csv('GradeInquiry/teacher/exelfiles/' + filename, index=False)
 
+        shutil.make_archive('GradeInquiry/teacher/zip', 'zip', root_dir='GradeInquiry/teacher/exelfiles')
 
+        zip_file = zipfile.ZipFile(ZIP_ROOT,mode='r')
 
+        # response =(zip_file, content_type='application/zip')
+
+        # response['Content-Disposition'] = 'attachment; filename="changedata.zip"'
+
+        return FileResponse(open(ZIP_ROOT,mode="rb"),as_attachment=True,filename="changedata.zip")
