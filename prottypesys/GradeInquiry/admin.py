@@ -6,9 +6,9 @@ from django.utils.translation import gettext as _
 
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
-    list_display = ['username', 'email']
+    list_display = ['id','username', 'email']
     fieldsets = (
-        (None, {'fields': ('password','admin_flag')}),
+        (None, {'fields': ('password','admin_flag','secret_key')}),
         (_('Personal Info'), {'fields': ('username',)}),
         (
             _('Permissions'),
@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2','admin_flag')
+            'fields': ('username', 'password1', 'password2','admin_flag','secret_key')
         }),
     )
 

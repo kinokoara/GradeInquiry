@@ -1,6 +1,9 @@
+import hashlib
 import logging
 import re
 
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.views import PasswordChangeView
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -8,12 +11,15 @@ from rest_framework.views import APIView
 
 from .models import Grade,LoginUser,Poster
 
-from .serializers import Userserializers, Gradeserializers,Loginserializers,Postserialiser,Postuserserialiser
+from .serializers import Userserializers, Gradeserializers,Loginserializers,Postserialiser,Postuserserialiser,SecretSeriarizers,Changepwseriarizer
 
 
 class CreateUserView(generics.CreateAPIView):
     serializer_class = Userserializers
     permission_classes = (AllowAny,)
+
+
+
 
 class LoginView(generics.ListCreateAPIView):
 
@@ -81,3 +87,38 @@ class DeletepostView(generics.DestroyAPIView,generics.ListAPIView):
                 return Response(status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response('You do not have permission to delete!!!')
+
+
+
+
+class SecretView(generics.CreateAPIView):
+    serializer_class = SecretSeriarizers
+    queryset = LoginUser.objects.all()
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+       
+        key = request.headers['key']
+        queryset = LoginUser.objects.filter(secret_key=key)
+        serializer = SecretSeriarizers(queryset,many=True)
+        value = serializer.data[0]
+        print(value)
+        return Response(serializer.data[0])
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = Changepwseriarizer
+    queryset = LoginUser.objects.all()
+    def update(self, request, pk,*args, **kwargs):
+        userdata = LoginUser.objects.filter(id=pk)
+        newpass = str(request.data['password'])
+        enewpass =make_password(newpass)
+        # hathpass = hashlib.sha256(enewpass).hexdigest()
+        userdata.update(password=enewpass)
+
+        return Response('changed your password')
+
+
+
+

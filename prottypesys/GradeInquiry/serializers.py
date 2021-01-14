@@ -9,7 +9,7 @@ class Userserializers(serializers.ModelSerializer):
 
     class Meta:
         model = LoginUser
-        fields = ('username', 'password',)
+        fields = ('username', 'password','secret_key')
 
     def create(self,validated_data):
         username = validated_data.get('username')
@@ -37,6 +37,13 @@ class Userserializers(serializers.ModelSerializer):
         else:admin_flag = 1
 
         return LoginUser.objects.create_user(admin_flag=admin_flag,**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+
+        instance.save()
+
+        return instance
 
 
 class Gradeserializers(serializers.ModelSerializer):
@@ -77,9 +84,15 @@ class Sheetserialiser(serializers.ModelSerializer):
         model = Sheet
         fields = ['changefile']
 
+class SecretSeriarizers(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['id']
 
-
-
+class Changepwseriarizer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['password']
 
 
 

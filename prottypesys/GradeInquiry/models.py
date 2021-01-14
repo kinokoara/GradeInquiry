@@ -15,8 +15,8 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self,username,password):
-        user = self.create_user(username,password)
+    def create_superuser(self,username,password,):
+        user = self.create_user(username,password,)
 
         user.is_superuser = True
 
@@ -33,6 +33,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):#ログインテーブル
     is_active = models.BooleanField(default=True)
     email = models.EmailField(max_length=255,)
     admin_flag = models.IntegerField(default=0)
+    secret_key = models.IntegerField(default=0)
     objects = UserManager()
     USERNAME_FIELD = 'username'
 
@@ -63,6 +64,8 @@ class Student(models.Model):#学籍マスタ
     class_number = models.CharField('クラス番号',max_length=6)
     couse_id = models.CharField('コースID',max_length=10,null=True)
     enrolled_id = models.CharField('在籍ID',max_length=10)
+    secret_key = models.CharField(max_length=255,blank=True,null=True,default="a")
+
     # birthday = models.DateTimeField(null=True)
 
     def __str__(self):
