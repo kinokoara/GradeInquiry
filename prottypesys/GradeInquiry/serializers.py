@@ -9,7 +9,7 @@ class Userserializers(serializers.ModelSerializer):
 
     class Meta:
         model = LoginUser
-        fields = ('username', 'password','secret_key')
+        fields = ('username', 'password',)
 
     def create(self,validated_data):
         username = validated_data.get('username')
@@ -18,6 +18,14 @@ class Userserializers(serializers.ModelSerializer):
         pattern = '^[A-D].?[0-9]{4}'
         # result1 = re.fullmatch(pattern1,username)
         result2 = re.fullmatch(pattern,username)
+
+        key = random.randint(100000000000,999999999999)
+
+        key_array = []
+
+        for i in key_array:
+            if i == key_array:
+                key = random.randint(100000000000, 999999999999)
 
         '''
         アカウント新規登録の際の処理
@@ -36,7 +44,7 @@ class Userserializers(serializers.ModelSerializer):
             admin_flag = 'error'
         else:admin_flag = 1
 
-        return LoginUser.objects.create_user(admin_flag=admin_flag,**validated_data)
+        return LoginUser.objects.create_user(admin_flag=admin_flag,secret_key=key,**validated_data)
 
     def update(self, instance, validated_data):
         instance.set_password(validated_data['password'])
@@ -54,7 +62,7 @@ class Gradeserializers(serializers.ModelSerializer):
 class Loginserializers(serializers.ModelSerializer):
     class Meta:
         model = LoginUser
-        fields = ['admin_flag']
+        fields = ['secret_key','admin_flag']
 
 class Gradestudentseriarizer(serializers.ModelSerializer):
     class Meta:
