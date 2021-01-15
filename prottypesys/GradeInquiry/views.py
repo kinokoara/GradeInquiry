@@ -98,8 +98,10 @@ class SecretView(generics.CreateAPIView):
 
     def post(self, request):
        
-        key = request.headers['key']
-        queryset = LoginUser.objects.filter(secret_key=key)
+        key = request.data['headers']
+        secret = key['key']
+        print(secret)
+        queryset = LoginUser.objects.filter(secret_key=secret)
         serializer = SecretSeriarizers(queryset,many=True)
         value = serializer.data[0]
         print(value)
