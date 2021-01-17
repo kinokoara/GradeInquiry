@@ -3,7 +3,7 @@ from rest_framework import routers
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CreateUserView,LoginView,AddPostcontentView,DeletepostView
+from .views import CreateUserView,LoginView,AddPostcontentView,DeletepostView,SecretView,ChangePasswordView
 from . import views
 
 
@@ -17,7 +17,10 @@ urlpatterns = [
     path('authenticate/', include('djoser.urls.jwt')),
     path('login/',LoginView.as_view(),name='login'),
     path('contents/',AddPostcontentView.as_view(),name='post'),
-    path('contents/<int:pk>/',DeletepostView.as_view(),name='delete')
+    path('contents/<int:pk>/',DeletepostView.as_view(),name='delete'),
+    path('keyinquey/',SecretView.as_view(),name='secret'),
+    path('changepw/<int:pk>', ChangePasswordView.as_view(),name='changePW')
+
 
 
 ]

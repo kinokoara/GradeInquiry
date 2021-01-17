@@ -1,5 +1,7 @@
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser,PermissionsMixin
 from django.db import models
+from django.utils import timezone
+
 
 class UserManager(BaseUserManager):
     def create_user(self,username,password=None,**extra_fields):
@@ -13,8 +15,8 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self,username,password):
-        user = self.create_user(username,password)
+    def create_superuser(self,username,password,):
+        user = self.create_user(username,password,)
 
         user.is_superuser = True
 
@@ -31,6 +33,7 @@ class LoginUser(AbstractBaseUser,PermissionsMixin):#ログインテーブル
     is_active = models.BooleanField(default=True)
     email = models.EmailField(max_length=255,)
     admin_flag = models.IntegerField(default=0)
+    secret_key = models.IntegerField(default=0)
     objects = UserManager()
     USERNAME_FIELD = 'username'
 
@@ -61,6 +64,8 @@ class Student(models.Model):#学籍マスタ
     class_number = models.CharField('クラス番号',max_length=6)
     couse_id = models.CharField('コースID',max_length=10,null=True)
     enrolled_id = models.CharField('在籍ID',max_length=10)
+    secret_key = models.CharField(max_length=255,blank=True,null=True,default="a")
+
     # birthday = models.DateTimeField(null=True)
 
     def __str__(self):
@@ -100,10 +105,16 @@ class Grade(models.Model):#成績テーブル
         id = self.subject_id
         queryset = Subject.objects.get(subject_name=id)
         return queryset.dividend_period
+
     def Units(self):
         id = self.subject_id
         queryset = Subject.objects.get(subject_name=id)
         return queryset.units
+
+    def lecture_name(self):
+        id = self.subject_id
+        queryset = Subject.objects.get(subject_name=id)
+        return queryset.lecture_name
 
     def __str__(self):
         return (self.grade_id)
@@ -120,9 +131,16 @@ class Poster(models.Model):
     poster_id = models.AutoField('投稿ID',primary_key=True)
     poster_name = models.CharField('投稿者',max_length=20,blank=True)
     poster_content = models.CharField('投稿内容',max_length=250,blank=True)
+    post_data = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return self.poster_name
 
+class Sheet(models.Model):
+    changefile = models.FileField(blank=False,null=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.changefile
 
 
 

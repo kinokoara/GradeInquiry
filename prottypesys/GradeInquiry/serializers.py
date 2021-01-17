@@ -1,6 +1,6 @@
 from rest_framework import serializers
 import random
-from .models import LoginUser,Grade,Poster
+from .models import LoginUser,Grade,Poster,Sheet
 import re
 
 
@@ -19,6 +19,14 @@ class Userserializers(serializers.ModelSerializer):
         # result1 = re.fullmatch(pattern1,username)
         result2 = re.fullmatch(pattern,username)
 
+        key = random.randint(100000000000,999999999999)
+
+        key_array = []
+
+        for i in key_array:
+            if i == key_array:
+                key = random.randint(100000000000, 999999999999)
+
         '''
         アカウント新規登録の際の処理
         
@@ -36,18 +44,25 @@ class Userserializers(serializers.ModelSerializer):
             admin_flag = 'error'
         else:admin_flag = 1
 
-        return LoginUser.objects.create_user(admin_flag=admin_flag,**validated_data)
+        return LoginUser.objects.create_user(admin_flag=admin_flag,secret_key=key,**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+
+        instance.save()
+
+        return instance
 
 
 class Gradeserializers(serializers.ModelSerializer):
     class Meta:
         model = Grade
-        fields = ['subject_name','Dividend_period','evaluation','Units']
+        fields = ['subject_name','Dividend_period','evaluation','Units','lecture_name']
 
 class Loginserializers(serializers.ModelSerializer):
     class Meta:
         model = LoginUser
-        fields = ['admin_flag']
+        fields = ['secret_key','admin_flag']
 
 class Gradestudentseriarizer(serializers.ModelSerializer):
     class Meta:
@@ -58,14 +73,34 @@ class Gradestudentseriarizer(serializers.ModelSerializer):
 class Postserialiser(serializers.ModelSerializer):
     class Meta:
         model = Poster
-        fields = ['poster_name','poster_content']
+        fields = ['poster_id','poster_name','poster_content','post_data']
 
 class Unitserializer(serializers.ModelSerializer):
     class Meta:
         model = Grade
         fields = ['Units']
 
+class Postuserserialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Poster
+        fields = ['poster_name']
 
+class Sheetserialiser(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Sheet
+        fields = ['changefile']
+
+class SecretSeriarizers(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['id']
+
+class Changepwseriarizer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginUser
+        fields = ['password']
 
 
 
