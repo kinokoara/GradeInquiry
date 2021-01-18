@@ -64,7 +64,7 @@ class Student(models.Model):#学籍マスタ
     class_number = models.CharField('クラス番号',max_length=6)
     couse_id = models.CharField('コースID',max_length=10,null=True)
     enrolled_id = models.CharField('在籍ID',max_length=10)
-    secret_key = models.CharField(max_length=255,blank=True,null=True,default="a")
+    # secret_key = models.CharField(max_length=255,blank=True,null=True,default="a")
 
     # birthday = models.DateTimeField(null=True)
 
