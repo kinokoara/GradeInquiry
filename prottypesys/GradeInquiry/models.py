@@ -64,9 +64,8 @@ class Student(models.Model):#学籍マスタ
     class_number = models.CharField('クラス番号',max_length=6)
     couse_id = models.CharField('コースID',max_length=10,null=True)
     enrolled_id = models.CharField('在籍ID',max_length=10)
-    # secret_key = models.CharField(max_length=255,blank=True,null=True,default="a")
 
-    # birthday = models.DateTimeField(null=True)
+
 
     def __str__(self):
         return self.student_number
@@ -86,15 +85,10 @@ class Grade(models.Model):#成績テーブル
     grade_id = models.CharField('成績ID',blank=True,max_length=10,primary_key=True)
     evaluation = models.CharField('評価',blank=True,max_length=2,)
 
-    # subject_id = models.CharField('科目番号',blank=True,max_length=7)
     subject_id = models.ForeignKey(Subject,verbose_name='科目番号',on_delete=models.CASCADE ,null=True,blank=True)
 
 
     student_number = models.CharField('学籍番号',blank=True,max_length=5)
-    # student_number = models.ForeignKey(Student,verbose_name='学籍番号',on_delete=models.CASCADE)
-
-
-
 
     def subject_name(self):
         id = self.subject_id
