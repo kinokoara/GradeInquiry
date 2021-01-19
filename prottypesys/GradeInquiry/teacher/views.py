@@ -253,15 +253,21 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         serialisersarrayは学籍番号のみを全て取得
         studentarrayは学籍番号と項目名を一緒に取得している
         '''
-        querysets = Grade.objects.filter(student_number__iregex='^[A-D].*$')
+        uesdarray = []
+        querysets = Grade.objects.filter(student_number__iregex='^[A-D].*$').distinct()
         serialisers = Gradestudentseriarizer(querysets, many=True, )
         serialisersarray = (list(serialisers.data[0].values()))
+        studented_num = serialisersarray[0]
 
-
-        for i in range(1,100):
+        for i in range(1,400):
             student_num = (list(serialisers.data[i].values()))
-            serialisersarray.append(student_num[0])
-            studentarray = (list(serialisers.data))
+
+            if studented_num != student_num[0]:
+                serialisersarray.append(student_num[0])
+                studentarray = (list(serialisers.data))
+                print(serialisersarray)
+                studented_num = student_num[0]
+
 
         print(serialisersarray)
         userlen = len(serialisersarray)
@@ -275,7 +281,6 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             gradeint_array = []
             unitall_array = []
             unit_array = []
-            sum_array = []
             numgrade_dict = {}
 
             queryset = Grade.objects.filter(student_number=serialisersarray[n])
@@ -335,22 +340,22 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         '''
         queryset = []
         serialiser = []
-        for i in range(100):
+        for i in range(87):
             queryset.append(Grade.objects.filter(student_number=serialisersarray[i]))
             serialiser.append(Gradeserializers(queryset[i], many=True,))
         Alist = []
         Blist = []
         Clist = []
-        Dlist = []
-
+        # Dlist = []
+        print(serialisersarray)
         for i in range(0, 29):
-            Alist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
+            Alist.append([serialisersarray[i], serialiser[i].data,[round(grate_array[i],3)]])
         for i in range(30,60):
-            Blist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
+            Blist.append([serialisersarray[i], serialiser[i].data,[round(grate_array[i],3)]])
         for i in range(61,87):
-            Clist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
-        for i in range(88,99):
-            Dlist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
+            Clist.append([serialisersarray[i], serialiser[i].data,[round(grate_array[i],3)]])
+        # for i in range(88,99):
+        #     Dlist.append([studentarray[i], serialiser[i].data,[round(grate_array[i],3)]])
 
 
         return Response(
@@ -364,9 +369,9 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
             [
                     Clist
             ],
-            [
-                    Dlist
-            ]
+            # [
+            #         Dlist
+            # ]
         ])
 
 
