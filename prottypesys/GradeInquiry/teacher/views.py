@@ -353,7 +353,7 @@ class SourtGradeShowViewSet(generics.ListCreateAPIView):
         print(serialisersarray)
         for i in range(0, 29):
             Alist.append([student_number[i], serialiser[i].data,[round(grate_array[i],3)]])
-        for i in range(30,60):
+        for i in range(29,60):
             Blist.append([student_number[i], serialiser[i].data,[round(grate_array[i],3)]])
         for i in range(61,87):
             Clist.append([student_number[i], serialiser[i].data,[round(grate_array[i],3)]])
