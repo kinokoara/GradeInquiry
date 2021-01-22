@@ -111,7 +111,7 @@ class Grade(models.Model):#成績テーブル
         return queryset.lecture_name
 
     def __str__(self):
-        return (self.student_number)
+        return (self.grade_id)
 
 class Enrolled(models.Model):
     enrolled_id = models.CharField(max_length=10)
