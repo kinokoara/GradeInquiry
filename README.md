@@ -4,4 +4,7 @@
 
 pip install django
 
-各種モジュール pip install にてインストール
+各種モジュール pip install 
+
+fin
+#開発終了
